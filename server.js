@@ -2,7 +2,8 @@ const express=require('express');
 const graphqlHTTP=require('express-graphql');
 const schema = require('./schema/schema');
 const mongoose = require('mongoose');
-const cors = require('cors');
+const cors = require('cors')
+const path = require('path');
 
 const app=express();
 
@@ -20,6 +21,14 @@ app.use('/graphql', graphqlHTTP({
   graphiql:true
 }));
 
-app.listen(4000, ()=>{
+app.use(express.static('public'));
+
+const PORT=process.env.PORT||5000;
+
+app.get('*', (req, res)=>{
+  res.sendFile(path.resolve(__dirname, 'public', index.html));
+})
+
+app.listen(PORT, ()=>{
   console.log('now listening on port 4000');
 });
